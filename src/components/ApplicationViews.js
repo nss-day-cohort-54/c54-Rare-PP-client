@@ -1,7 +1,7 @@
 import React from "react"
 import { Route } from "react-router-dom"
 import { Home } from "./home/Home.js"
-import { AllPosts } from "./allposts/AllPosts.js"
+import { AllPosts } from "./posts/AllPosts.js"
 
 export const ApplicationViews = () => {
   return (
