@@ -43,6 +43,7 @@ export const NavBar = ({ token, setToken }) => {
                   <div className="navbar-item">
                     <Link to="/tags" className="navbar-item">Tag Manager</Link>
                   </div> 
+                  {/* add link to UserList view */}
               </>
               : ""
           }

@@ -4,3 +4,6 @@ export const getAllPosts = () => {
   return fetch(`${API}/posts`)
     .then((res) => res.json())
 }
+
+
+// get posts by user id
