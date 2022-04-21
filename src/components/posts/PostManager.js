@@ -28,3 +28,6 @@ export const getAllPosts = () => {
     // method: PUT
     // normal headers
     // body is stringified json with entry passed as arg
+
+// get posts by user id
+
