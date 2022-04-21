@@ -15,7 +15,9 @@ export const AllPosts = () => {
     return <>
         <div>AllPosts Page</div>
         {posts.map((post) => {
-            return <div>{post.title}</div>
+            return <div>{post.title} {post.user} {post.category} {post.publication_date} {post.content}
+            </div>
+            // needs author name and category, publication date, content 
         })}
 
 
