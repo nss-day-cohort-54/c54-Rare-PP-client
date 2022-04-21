@@ -16,8 +16,25 @@ export const AllPosts = () => {
         <div>AllPosts Page</div>
         {posts.map((post) => {
             return <div>{post.title}</div>
-        }
+        })}
 
-        )}
+
     </>
 }
+
+// ADD INTO RETURN STATEMENT ABOVE
+// delete button
+    // onclick
+        // prompts with "Are you sure you want to delete this post?" alert window
+        // Alert window "Ok" button
+        // Alert window "Cancel" button
+
+// edit button
+    // onclick
+        // Links to "Author Edit Post" page
+
+// add post button
+    // onclick
+        // Links to "Author My Posts" page
+
+//search field
