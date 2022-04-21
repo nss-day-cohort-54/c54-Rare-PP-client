@@ -33,7 +33,6 @@ export const NavBar = ({ token, setToken }) => {
             token
               ?
               <>
-<<<<<<< HEAD
                 <Link to="/posts/all" className="navbar-item">All Posts</Link>
                 <div className="navbar-item">
                   <Link to="/posts/myPosts" className="navbar-item">My Posts</Link>
@@ -44,7 +43,6 @@ export const NavBar = ({ token, setToken }) => {
                 <div className="navbar-item">
                   <Link to="/tags" className="navbar-item">Tag Manager</Link>
                 </div>
-=======
               <Link to="/posts/all" className="navbar-item">All Posts</Link>
                                 <div className="navbar-item">
                     <Link to="/posts/myPosts" className="navbar-item">My Posts</Link>
@@ -56,7 +54,6 @@ export const NavBar = ({ token, setToken }) => {
                     <Link to="/tags" className="navbar-item">Tag Manager</Link>
                   </div> 
                   {/* add link to UserList view */}
->>>>>>> main
               </>
               : ""
           }
