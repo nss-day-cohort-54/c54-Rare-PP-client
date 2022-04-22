@@ -15,7 +15,8 @@ export const AllTags = () => {
     return <>
         <div>AllTags Page</div>
         {tags.map((tag) => {
-            return <div key={`tag--${tag.id}`}>{tag.label}
+            return <div key={`tag--${tag.id}`}>{tag.label} 
+            <button>edit</button> <button>delete</button>
             </div>
         })}
 
