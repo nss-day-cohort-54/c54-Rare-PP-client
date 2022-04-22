@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-
+import { useHistory } from "react-router-dom";
 // define a function that returns the create new tag form
 export const NewTagForm = () => {
-
+    
     const [form, updateForm] = useState()
-
+    const history = useHistory()
+    
     // define a new function, submitNewTag its purpose will be submitting the new tag to the server 
     // accepts one parameter, "e"
     // e.preventDefault()
@@ -34,7 +35,8 @@ export const NewTagForm = () => {
         }
 
         return fetch("http://localhost:8088/tags", fetchOption)
-        .then(window.location.reload())
+        // .then(window.location.reload())
+        .then(history.go(0))
     }
     
 
