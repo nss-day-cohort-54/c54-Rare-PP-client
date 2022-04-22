@@ -3,6 +3,7 @@ import { Route } from "react-router-dom"
 import { Home } from "./home/Home.js"
 import { AllPosts } from "./posts/AllPosts.js"
 import { UserList } from "./users/UserList.js"
+import { AllTags } from "./tags/AllTags.js"
 
 export const ApplicationViews = () => {
   return (
@@ -16,15 +17,15 @@ export const ApplicationViews = () => {
       <Route exact path="/users">
         <UserList />
       </Route>
+      <Route path="/tags">
+        <AllTags />
+      </Route>
       {/* 
       <Route exact path="/posts/myPosts">
         <MyPosts />
       </Route>
       <Route exact path="/posts/create">
         <CreatePost />
-      </Route>
-      <Route exact path="/tags">
-        <TagManager />
       </Route>
       <Route exact path="/categories">
         <CategoryManager />
