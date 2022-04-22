@@ -4,19 +4,41 @@
 // post sub relationship
 // delete sub relationship
 
+import { useParams } from "react-router-dom"
+import { useEffect, useState } from "react"
 import "./User.css"
+import { getSingleUser } from "./UserManager"
+import { Link } from "react-router-dom"
 
 // function that generates JSX for individual user element
 export const User = ({ listView, user }) => {
     // probably want a prop that indicates whether 
     // content is being generated in a list vs individual page
-    
-    if(listView) {
+    const [viewUser, setViewUser] = useState(user)
+    const [postCount, setPostCount] = useState(0)
+    const { userId } = useParams()
+
+    useEffect(
+        () => {
+            if(!listView) {
+                getSingleUser(userId)
+                    .then(userData => setViewUser(userData))
+            }
+        }, [userId, listView]
+    )
+
+    useEffect(
+        () => {
+            if(viewUser) {
+                let count = viewUser.posts.length
+                setPostCount(count)
+            }
+        }, [viewUser]
+    )
         // define state variables
         // maybe get user's articles for the clickable article count?
         // articles, setArticles = useState()
         // subscribed, setSubscribed = useState(false) // default could be false
-    }
 
     // define useEffects
     // only needed for list view
@@ -40,12 +62,31 @@ export const User = ({ listView, user }) => {
     return <>
         {listView 
             ? <div className="singleUser">
-                <div>{user.username}</div>
+                <div>
+                    <Link to={`/users/${user.id}`}>
+                    {user.username}
+                    </Link>
+                </div>
                 <div>{user.first_name}</div>
                 <div>{user.last_name}</div>
                 <div>{user.email}</div>
             </div> 
-            : "false"
+            : viewUser
+                ? <div>
+                    <div>Picture: <img src={`${viewUser.profile_image_url || ""}`} /></div>
+                    <div>Name: {viewUser.first_name} {viewUser.last_name}</div>
+                    <div>Username: {viewUser.username}</div>
+                    <div>Email: {viewUser.email}</div>
+                    <div>Creation Date: {viewUser.created_on}</div>
+                    <div>Profile Type: Author</div>
+                    <div>
+                        <Link to="/">
+                        See Articles - Count: {postCount}
+                        </Link>
+                    </div>
+                    <div>Subscribed Placeholder</div>
+                </div>
+                : null
         }
     {/* 
         JSX for the individual user
