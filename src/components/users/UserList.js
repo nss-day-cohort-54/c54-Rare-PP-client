@@ -2,6 +2,7 @@
 // import { User } from "./User"
 // get all users fetch
 import { useEffect, useState } from "react"
+import { User } from "./User"
 import { getAllUsers } from "./UserManager"
 
 // function that generates list of users
@@ -26,11 +27,16 @@ export const UserList = () => {
 
     // return jsx
     return <>
-    User List page
+    <div className="singleUser">
+        <div>Username</div>
+        <div>First Name</div>
+        <div>Last Name</div>
+        <div>Email</div>
+    </div>
     {
         users.map(user => {
             return <div key={`user-${user.id}`}>
-                {user.first_name}
+                <User user={user} listView={true} />
             </div>
         })
     }

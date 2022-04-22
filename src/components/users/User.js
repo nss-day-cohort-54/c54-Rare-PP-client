@@ -4,17 +4,22 @@
 // post sub relationship
 // delete sub relationship
 
+import "./User.css"
+
 // function that generates JSX for individual user element
-export const User = () => {
+export const User = ({ listView, user }) => {
     // probably want a prop that indicates whether 
     // content is being generated in a list vs individual page
     
-    // define state variables
-    // maybe get user's articles for the clickable article count?
-    // articles, setArticles = useState()
-    // subscribed, setSubscribed = useState(false) // default could be false
+    if(listView) {
+        // define state variables
+        // maybe get user's articles for the clickable article count?
+        // articles, setArticles = useState()
+        // subscribed, setSubscribed = useState(false) // default could be false
+    }
 
     // define useEffects
+    // only needed for list view
     // useEffect(() => getArticlesForUser function then setArticles, [])
 
     /* useEffect(() => getSubscribedStatus)
@@ -33,7 +38,15 @@ export const User = () => {
         // if not subbed - onclick calls add sub function
 
     return <>
-    
+        {listView 
+            ? <div className="singleUser">
+                <div>{user.username}</div>
+                <div>{user.first_name}</div>
+                <div>{user.last_name}</div>
+                <div>{user.email}</div>
+            </div> 
+            : "false"
+        }
     {/* 
         JSX for the individual user
             in list form - just need name and link to individual page
