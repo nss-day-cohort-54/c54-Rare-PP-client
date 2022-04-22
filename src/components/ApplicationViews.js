@@ -2,15 +2,19 @@ import React from "react"
 import { Route } from "react-router-dom"
 import { Home } from "./home/Home.js"
 import { AllPosts } from "./posts/AllPosts.js"
+import { UserList } from "./users/UserList.js"
 
 export const ApplicationViews = () => {
   return (
     <>
-      <Route exact path="/home">
+      <Route exact path="/">
         <Home />
       </Route>
       <Route exact path="/posts/all">
         <AllPosts />
+      </Route>
+      <Route exact path="/users">
+        <UserList />
       </Route>
       {/* 
       <Route exact path="/posts/myPosts">
