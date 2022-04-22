@@ -1,4 +1,24 @@
-// basically copy the "allPosts.js" module but refactor for getting tags 
+import { getAllTags } from "./TagManager"
+import React, { useEffect, useState } from "react";
 
-    // add edit and delete buttons within the Map, so that each tag has an edit and delete button, 
-    // don't worry about functionality for buttons yet
+export const AllTags = () => {
+
+    const [tags, setTags] = useState([])
+
+    useEffect(() => {
+        getAllTags()
+            .then((tags) => {
+                setTags(tags)
+            })
+    },
+        [])
+    return <>
+        <div>AllTags Page</div>
+        {tags.map((tag) => {
+            return <div key={`tag--${tag.id}`}>{tag.label}
+            </div>
+        })}
+
+
+    </>
+}
