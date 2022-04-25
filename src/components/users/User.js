@@ -9,6 +9,7 @@ import { useEffect, useState } from "react"
 import "./User.css"
 import { getSingleUser } from "./UserManager"
 import { Link } from "react-router-dom"
+import { SubForm } from "./SubForm"
 
 // function that generates JSX for individual user element
 export const User = ({ listView, user }) => {
@@ -67,24 +68,26 @@ export const User = ({ listView, user }) => {
                     {user.username}
                     </Link>
                 </div>
-                <div>{user.first_name}</div>
-                <div>{user.last_name}</div>
+                <div>{user.firstName}</div>
+                <div>{user.lastName}</div>
                 <div>{user.email}</div>
             </div> 
             : viewUser
                 ? <div>
-                    <div>Picture: <img src={`${viewUser.profile_image_url || ""}`} /></div>
-                    <div>Name: {viewUser.first_name} {viewUser.last_name}</div>
+                    <div>Picture: <img src={`${viewUser.profileImageUrl || ""}`} /></div>
+                    <div>Name: {viewUser.firstName} {viewUser.lastName}</div>
                     <div>Username: {viewUser.username}</div>
                     <div>Email: {viewUser.email}</div>
-                    <div>Creation Date: {viewUser.created_on}</div>
+                    <div>Creation Date: {viewUser.createdOn}</div>
                     <div>Profile Type: Author</div>
                     <div>
                         <Link to="/">
                         See Articles - Count: {postCount}
                         </Link>
                     </div>
-                    <div>Subscribed Placeholder</div>
+                    <div>
+                        <SubForm author={viewUser} />
+                    </div>
                 </div>
                 : null
         }

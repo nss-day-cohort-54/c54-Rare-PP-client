@@ -25,5 +25,9 @@ export const fetchIt = (url, method = "GET", body = null) => {
 
     // send request with options, convert response to json
     return fetch(url, options)
-            .then(r => r.json())
+            .then(r => {
+                if(method != "DELETE" && method != "PUT"){
+                    return r.json()  
+                }
+            })
 }
