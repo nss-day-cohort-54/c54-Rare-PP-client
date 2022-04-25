@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import {fetchIt} from "../utils/Fetch"
-import {Settings} from "../utils/Settings"
+import { fetchIt } from "../utils/Fetch"
+import { Settings } from "../utils/Settings"
+import { getAllTags } from "./TagManager";
 // define a function that returns the create new tag form
-export const NewTagForm = () => {
-    
-    const [form, updateForm] = useState()
+export const NewTagForm = ({ getTags }) => {
+
+    const [form, updateForm] = useState({label: ""})
     const history = useHistory()
-    
+
     // define a new function, submitNewTag its purpose will be submitting the new tag to the server 
     // accepts one parameter, "e"
     // e.preventDefault()
@@ -23,14 +24,16 @@ export const NewTagForm = () => {
 
     // example:
 
-    const submitTag = (e) =>{
+    const submitTag = (e) => {
         e.preventDefault()
         const newTag = {
             label: form.label,
         }
-        return fetchIt(`${Settings.API}/tags`, "POST", JSON.stringify(newTag)
-        )
-        .then(history.go(0))
+        return fetchIt(`${Settings.API}/tags`, "POST", JSON.stringify(newTag))
+                .then(getTags)
+                
+                // .then(getAllTags())
+                // .then(tagsData => setTags(tagsData))
         // const fetchOption = {
         //     method: "POST",
         //     headers: {
@@ -42,7 +45,7 @@ export const NewTagForm = () => {
         // return fetch("http://localhost:8088/tags", fetchOption)
         // // .then(window.location.reload())
     }
-    
+
 
 
 
@@ -71,6 +74,7 @@ export const NewTagForm = () => {
                         type="text" id="tag"
                         className="form-control"
                         placeholder="add text"
+                        value={form.label}
                         onChange={
                             (e) => {
                                 const copy = { ...form }
@@ -81,7 +85,10 @@ export const NewTagForm = () => {
                     />
                     <div className="submitButtonCreateNewTagForm">
 
-                        <button onClick={submitTag} className="submit-button">
+                        <button onClick={(e) => {
+                            submitTag(e)
+                            updateForm({label: ""})
+                        }} className="submit-button">
                             Submit
                         </button>
                     </div>
