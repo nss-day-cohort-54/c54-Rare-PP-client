@@ -30,4 +30,25 @@ export const getAllPosts = () => {
     // body is stringified json with entry passed as arg
 
 // get posts by user id
+// export const getUserPosts = (id) => {
+//   return fetch(`http://localhost:8088/users?userId=${id}`).then((res) => res.json());
+// };
+
+// get posts by categoryId
+// export const getPostsByCategoryId = (categoryId) => {
+//   return fetch(`http://localhost:8088/posts?categoryId=${categoryId}`)
+//   .then(response => response.json())
+// }
+
+// create post
+// export const createPost = (body) => {
+//   return fetch(`http://localhost:8088/posts`, {
+
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(body),
+//   }).then((response) => response.json());
+// };
 
