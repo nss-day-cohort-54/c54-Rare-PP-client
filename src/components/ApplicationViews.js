@@ -4,6 +4,8 @@ import { Home } from "./home/Home.js"
 import { AllPosts } from "./posts/AllPosts.js"
 import { UserList } from "./users/UserList.js"
 import { AllTags } from "./tags/AllTags.js"
+import { AllCategories } from "./categories/AllCategories"
+
 
 export const ApplicationViews = () => {
   return (
@@ -20,16 +22,16 @@ export const ApplicationViews = () => {
       <Route path="/tags">
         <AllTags />
       </Route>
-      {/* 
-      <Route exact path="/posts/myPosts">
+      
+      {/* <Route exact path="/posts/myPosts">
         <MyPosts />
       </Route>
       <Route exact path="/posts/create">
         <CreatePost />
-      </Route>
-      <Route exact path="/categories">
-        <CategoryManager />
       </Route> */}
+      <Route exact path="/categories">
+        <AllCategories />
+      </Route>
     </>
   )
 }
