@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import {fetchIt} from "../utils/Fetch"
+import {Settings} from "../utils/Settings"
 // define a function that returns the create new tag form
 export const NewTagForm = () => {
     
@@ -26,17 +28,19 @@ export const NewTagForm = () => {
         const newTag = {
             label: form.label,
         }
-        const fetchOption = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(newTag)
-        }
-
-        return fetch("http://localhost:8088/tags", fetchOption)
-        // .then(window.location.reload())
+        return fetchIt(`${Settings.API}/tags`, "POST", JSON.stringify(newTag)
+        )
         .then(history.go(0))
+        // const fetchOption = {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     },
+        //     body: JSON.stringify(newTag)
+        // }
+
+        // return fetch("http://localhost:8088/tags", fetchOption)
+        // // .then(window.location.reload())
     }
     
 
