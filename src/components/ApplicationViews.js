@@ -4,6 +4,7 @@ import { Home } from "./home/Home.js"
 import { AllPosts } from "./posts/AllPosts.js"
 import { UserList } from "./users/UserList.js"
 import { AllTags } from "./tags/AllTags.js"
+import { User } from "./users/User.js"
 
 export const ApplicationViews = () => {
   return (
@@ -16,6 +17,9 @@ export const ApplicationViews = () => {
       </Route>
       <Route exact path="/users">
         <UserList />
+      </Route>
+      <Route exact path="/users/:userId(\d+)">
+        <User listView={false} />
       </Route>
       <Route path="/tags">
         <AllTags />
