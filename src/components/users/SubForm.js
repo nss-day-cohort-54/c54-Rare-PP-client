@@ -19,7 +19,7 @@ export const SubForm = ({ author }) => {
 
     useEffect(
         () => {
-            if(currentUser > 0) {
+            if (currentUser > 0) {
                 getSubsForFollower(currentUser)
                     .then(subData => setSubs(subData))
             }
@@ -27,10 +27,10 @@ export const SubForm = ({ author }) => {
     )
 
     useEffect(() => {
-        if(subs && subs.length > 0) {
+        if (subs && subs.length > 0) {
             let isSubbed = false
             for (const sub of subs) {
-                if(sub.authorId === author.id){
+                if (sub.authorId === author.id) {
                     isSubbed = true
                     setCurrentSub(sub)
                 }
@@ -40,32 +40,40 @@ export const SubForm = ({ author }) => {
     }, [subs])
 
     const handleSub = (e) => {
-        if(subbed) {
+        if (subbed) {
             deleteSub(currentSub.id)
                 .then(setSubbed(false))
         } else {
-            let new_subscription = {
-                followerId: parseInt(currentUser),
-                authorId: author.id,
-                createdOn: (new Date()).toISOString().split('T')[0]
+            let userId = parseInt(currentUser)
+            if (userId != author.id) {
+                let new_subscription = {
+                    followerId: parseInt(currentUser),
+                    authorId: author.id,
+                    createdOn: (new Date()).toISOString().split('T')[0]
+                }
+                addSub(new_subscription)
+                    .then(returnedSub => {
+                        setCurrentSub(returnedSub)
+                    })
+                    .then(setSubbed(true))
+            } else {
+                window.alert("You can't subscribe to yourself.")
             }
-            addSub(new_subscription)
-                .then(returnedSub => {
-                    setCurrentSub(returnedSub)
-                })
-                .then(setSubbed(true))
         }
     }
 
     return <div>
-        <div>
-        <button
-            className="subButton"
-            onClick={(e) =>{
-                handleSub(e)
-            }}>
-                {subbed ? "Unsubscribe" : "Subscribe"}
-        </button>
-        </div>
+        {
+            parseInt(currentUser) != author.id
+                ? <button
+                    className="subButton"
+                    onClick={(e) => {
+                        handleSub(e)
+                    }}>
+                    {subbed ? "Unsubscribe" : "Subscribe"}
+                </button>
+                : null
+        }
+
     </div>
 }
