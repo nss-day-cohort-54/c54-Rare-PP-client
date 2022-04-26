@@ -6,79 +6,52 @@ import { Settings } from "../utils/Settings"
 import { getAllTags } from "../tags/TagManager";
 import { getAllPosts } from "./PostManager";
 import { getAllCategories } from "../categories/CategoryManager";
-// // Export function to create new posts and return jsx
-// export const CreatePosts = () => {
-//     // store useHistory() in var
-//     const history = useHistory()
-//     // [post, updatePost] = useState({keys with blank values<not id>})
-//     const [post, updatePost] = useState({name: "", userId: "", typeId: "", quantity: "", picture: "",})
-//     [tags, updateTags] = useState([])
-
-//     // useEffect to load tags and update them on page load only
-
-//     // declare savePost function that will invoke on event
-//     // prevent default on event
-
-//     // declare newPost variable
-//     // build example: 
-//     // {
-//     // name: item.name, 
-//     // userId: parseInt(localStorage.getItem("inventory__user")),
-//     // typeId: parseInt(item.typeId),
-//     // quantity: parseInt(item.quantity),
-//     // picture: item.picture,
-//     // };
-
-//     // return sendPost(newPost).then(()=> history.push("/posts"))
-
-//     // return a form <-- see updatePost.js form
-
-
-
-//     // invoke getAllTags from TagManager.js, and set all the tags to a variable "tags" with useState
-//     // map through the list of all tags, displaying a checkbox for each tag along with the name/label for each tag
-//     // comments for creating a post have yet to be written, but when the user selects at least one tag, attach it 
-//     // to the post that is getting sent to the db
-
-
-//     return <div>CreatePosts Page</div>
-// }
-
-
-
-// const [posts, setPosts] = useState([])
-
-// useEffect(() => {
-//     getAllPosts()
-//         .then((posts) => {
-//             setPosts(posts)
-//         })
-// },
-//     [])
-// return <>
-//     <div>AllPosts Page</div>
-//     {posts.map((post) => {
-//         return <div key={`post--${post.id}`}>{post.title} {post.user.first_name} {post.category.label} {post.publication_date} {post.content}
-//         </div>
-//         // needs author name and category, publication date, content 
-//     })}
-
-
 
 
 
 export const CreatePosts = ({ getPosts }) => {
     const [form, updateForm] = useState({ label: "" })
     const [categories, setCategories] = useState([])
+    const [tags, setTags] = useState([])
     const history = useHistory()
 
-useEffect(() => {
-    getAllCategories()
-        .then((categories) => {
-            setCategories(categories)
-        })
-},
-    [])
+    useEffect(() => {
+        getAllCategories()
+            .then((categories) => {
+                setCategories(categories)
+            })
+    },
+        [])
+
+    useEffect(() => {
+        getAllTags()
+            .then((tags) => {
+                setTags(tags)
+            })
+    },
+        [])
+
+        const handleControlledInputChange = (event) => {
+            /*
+                When changing a state object or array, always create a new one
+                and change state instead of modifying current one
+            */
+            const newEntry = Object.assign({}, form)
+            if(event.target.name === "tags") {
+                if(!(event.target.name in newEntry)){
+                    newEntry[event.target.name] = []
+                }
+                let val = parseInt(event.target.id)
+                if(event.target.checked) {
+                    newEntry[event.target.name].push(val)
+                } else {
+                    newEntry[event.target.name] = newEntry[event.target.name].filter(tag => tag !== val)
+                }
+            } else {
+                newEntry[event.target.name] = event.target.value
+            }
+            updateForm(newEntry)
+        }
 
     const submitPost = (e) => {
         e.preventDefault()
@@ -90,7 +63,7 @@ useEffect(() => {
             imageUrl: form.imageUrl,
             content: form.content,
             approved: 1,
-            tags: []
+            tags: form.tags
         }
         return fetchIt(`${Settings.API}/posts`, "POST", JSON.stringify(newPost))
             .then((taco) => history.push(`/posts/single/${taco.id}`))
@@ -99,7 +72,7 @@ useEffect(() => {
         <>
             <fieldset>
                 <div className="form-group">
-                    
+
                     <input
                         required autoFocus
                         type="text" id="post"
@@ -118,7 +91,7 @@ useEffect(() => {
             </fieldset>
             <fieldset>
                 <div className="form-group">
-                    
+
                     <input
                         required autoFocus
                         type="text" id="post"
@@ -137,7 +110,7 @@ useEffect(() => {
             </fieldset>
             <fieldset>
                 <div className="form-group">
-                    
+
                     <input
                         required autoFocus
                         type="text" id="post"
@@ -158,37 +131,66 @@ useEffect(() => {
 
 
             <fieldset>
-                    <div className="form-group">
-                        
-                        <select name="category"
-                            onChange={(e) => {
-                                const copy = { ...form }
-                                copy.categoryId = parseInt(e.target.value)
-                                updateForm(copy)
-                            }}
-                            defaultValue="0" value={form.categoryId}>
-                            <option value="0" hidden>Category Select</option>
-                            {
-                                categories.map(
-                                    (c) => {
-                                        return (
-                                            <option key={`categoryId--${c.id}`} value={`${c.id}`}>
-                                                {`${c.label}`}
-                                            </option>
-                                        )
-                                    }
-                                )
-                            }
-                        </select>
-                    </div>
-                </fieldset>
+                <div className="form-group">
 
+                    <select name="category"
+                        onChange={(e) => {
+                            const copy = { ...form }
+                            copy.categoryId = parseInt(e.target.value)
+                            updateForm(copy)
+                        }}
+                        defaultValue="0" value={form.categoryId}>
+                        <option value="0" hidden>Category Select</option>
+                        {
+                            categories.map(
+                                (c) => {
+                                    return (
+                                        <option key={`categoryId--${c.id}`} value={`${c.id}`}>
+                                            {`${c.label}`}
+                                        </option>
+                                    )
+                                }
+                            )
+                        }
+                    </select>
+                </div>
+            </fieldset>
+
+
+
+            {tags.map(tag => {
+                // logic to determine whether box should be pre-checked
+                // let checked_status = false
+                // if("tags" in updatedEntry) {
+                //     if(updatedEntry.tags.length > 0) {
+                //         let found_tag = updatedEntry.tags.find(t => t === tag.id)
+                //         if(found_tag){
+                //             checked_status = true
+                //         } else {
+                //             checked_status = false
+                //         }
+                //     } else {
+                //         checked_status = false
+                //     }
+                // }
+                return <div key={`formTags-${tag.id}`} className="checkbox">
+                    <input name="tags"
+                        type="checkbox"
+                        htmlFor="tag"
+                        id={tag.id}
+                        onChange={handleControlledInputChange}
+                        // checked={checked_status}
+                    />
+                    <label htmlFor={tag.id}>{tag.label}</label>
+                </div>
+            })
+            }
 
 
             <div className="submitButtonCreateNewPostForm">
                 <button onClick={(e) => {
                     submitPost(e)
-                    updateForm({ title: "", imageUrl: "", content: "", categoryId: "0"})
+                    updateForm({ title: "", imageUrl: "", content: "", categoryId: "0" })
                 }} className="submit-button">
                     Submit
                 </button>
@@ -196,73 +198,3 @@ useEffect(() => {
         </>
     )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { useEffect, useState } from "react";
-// import { useHistory } from "react-router-dom";
-// import { fetchIt } from "../utils/Fetch"
-// import { Settings } from "../utils/Settings"
-// import { getAllTags } from "./TagManager";
-// export const NewTagForm = ({ getTags }) => {
-//     const [form, updateForm] = useState({label: ""})
-//     const history = useHistory()
-//     const submitTag = (e) => {
-//         e.preventDefault()
-//         const newTag = {
-//             label: form.label,
-//         }
-//         return fetchIt(`${Settings.API}/tags`, "POST", JSON.stringify(newTag))
-//                 .then(getTags)
-//     }
-//     return (
-//         <>
-//             <fieldset>
-//                 <div className="form-group">
-//                     <label htmlFor="tag">Create a new tag</label>
-//                     <input
-//                         required autoFocus
-//                         type="text" id="tag"
-//                         className="form-control"
-//                         placeholder="add text"
-//                         value={form.label}
-//                         onChange={
-//                             (e) => {
-//                                 const copy = { ...form }
-//                                 copy.label = e.target.value
-//                                 updateForm(copy)
-//                             }
-//                         }
-//                     />
-//                     <div className="submitButtonCreateNewTagForm">
-//                         <button onClick={(e) => {
-//                             submitTag(e)
-//                             updateForm({label: ""})
-//                         }} className="submit-button">
-//                             Submit
-//                         </button>
-//                     </div>
-//                 </div>
-//             </fieldset>
-//         </>
-//     )
-// }
