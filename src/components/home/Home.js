@@ -1,3 +1,8 @@
+import { SubbedPosts } from "../posts/SubbedPosts"
+
 export const Home = () => {
-    return <div>Home Page</div>
+    return <div>
+        <div>Home Page</div>
+        <SubbedPosts />
+    </div>
 }
