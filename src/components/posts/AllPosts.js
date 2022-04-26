@@ -6,36 +6,52 @@ import { Post } from "./Post";
 export const AllPosts = () => {
 
     const [posts, setPosts] = useState([])
+    const [filter, setFilterType] = useState({ type: "all", value: ""})
+
     useEffect(() => {
-        getAllPosts()
-            .then((posts) => {
-                setPosts(posts)
-            })
-    },
-        [])
+        if (filter.type === "all") {
+            getAllPosts()
+                .then((posts) => {
+                    setPosts(posts)
+                })
+        } else if (filter.type === "title") {
+            searchPostTitles(filter.value)
+                .then(setPosts)
+        } else if (filter.type = "category") {
+            // run category filter fetch with value
+        } else if (filter.type = "user") {
+            // run user filter fetch with value
+        } else if (filter.type = "tag") {
+            // run tag filter fetch with value
+        }
+    }, [filter])
 
     // useEffect that updates posts, [searchButton]
     return <>
+        {/* filter by title jsx */}
         <fieldset>
             <div className="form-group">
                 <input
-                    autoFocus
                     type="text"
                     className="form-control"
                     placeholder="Title..."
                 />
                 <button className='button' onClick={e => {
                     e.preventDefault()
-                    // debugger
-                    searchPostTitles(e.currentTarget.previousElementSibling.value)
-                        .then(setPosts)
+                    let filterToSet = {
+                        type: "title",
+                        value: e.currentTarget.previousElementSibling.value
+                    }
+                    setFilterType(filterToSet)
                 }}>
                     <label htmlFor="searchButton">Search</label>
                 </button>
             </div>
-
         </fieldset>
-        <div>AllPosts Page</div>
+        {/* filter by category jsx */}
+        {/* filter by user jsx */}
+        {/* filter by tag jsx */}
+
         <div className="singlePost">
             <div>Title</div>
             <div>Author</div>
