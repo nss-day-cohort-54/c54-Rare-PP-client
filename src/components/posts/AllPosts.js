@@ -1,6 +1,6 @@
 import { getAllPosts } from "./PostManager"
 import React, { useEffect, useState } from "react";
-import { searchPostTitles } from "./PostManager"
+import { Post } from "./Post";
 
 export const AllPosts = () => {
 
@@ -16,7 +16,6 @@ export const AllPosts = () => {
 
     // useEffect [searchButton]
     return <>
-        <div>AllPosts Page</div>
         <fieldset>
             <div className="form-group">
                 <input
@@ -32,9 +31,16 @@ export const AllPosts = () => {
             </div>
 
         </fieldset>
+        <div>AllPosts Page</div>
+        <div className="singlePost">
+            <div>Title</div>
+            <div>Author</div>
+            <div>Publication Date</div>
+            <div>Category</div>
+            <div>Tags</div>
+        </div>
         {posts.map((post) => {
-            return <div key={`post--${post.id}`}>{post.title} {post.user.first_name} {post.category.label} {post.publication_date} {post.content}
-            </div>
+            return <Post listView={true} cardView={false} post={post} />
             // needs author name and category, publication date, content 
         })}
 

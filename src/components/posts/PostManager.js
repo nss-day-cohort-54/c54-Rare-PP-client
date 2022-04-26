@@ -1,12 +1,17 @@
-const API = 'http://localhost:8088'
+import { fetchIt } from "../utils/Fetch";
+import { Settings } from "../utils/Settings"
+
 
 export const getAllPosts = () => {
-  return fetch(`${API}/posts`)
+  return fetch(`${Settings.API}/posts`)
     .then((res) => res.json())
 }
 
 // export function that fetches single post, needs param to take id as arg, then parse from json to js
 
+export const getSinglePost = (id) => {
+  return fetchIt(`${Settings.API}/posts/${id}`)
+};
 // export function that adds post
 
 // for each post, return the fetch entries,
@@ -30,9 +35,9 @@ export const getAllPosts = () => {
 // body is stringified json with entry passed as arg
 
 // get posts by user id
-// export const getUserPosts = (id) => {
-//   return fetch(`http://localhost:8088/users?userId=${id}`).then((res) => res.json());
-// };
+export const getUserPosts = (id) => {
+  return fetchIt(`${Settings.API}/posts?user_id=${id}`)
+};
 
 // get posts by categoryId
 // export const getPostsByCategoryId = (categoryId) => {
