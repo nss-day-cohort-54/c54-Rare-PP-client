@@ -9,25 +9,25 @@ export const getAllPosts = () => {
 
 // export function that adds post
 
-  // for each post, return the fetch entries,
+// for each post, return the fetch entries,
 
-    // method is POST
-    // headers
+// method is POST
+// headers
 
-    // body will have stringified json with (post) as arg
-    // then getAllPosts
+// body will have stringified json with (post) as arg
+// then getAllPosts
 
 
 // export function that deletes a single post "postId => {"
-  // return a fetch with /${postId},
-    // method: DELETE
+// return a fetch with /${postId},
+// method: DELETE
 
 
 // export a function that edits a post "post => {"
-  // return fetch with /{post.id}
-    // method: PUT
-    // normal headers
-    // body is stringified json with entry passed as arg
+// return fetch with /{post.id}
+// method: PUT
+// normal headers
+// body is stringified json with entry passed as arg
 
 // get posts by user id
 // export const getUserPosts = (id) => {
@@ -52,3 +52,7 @@ export const getAllPosts = () => {
 //   }).then((response) => response.json());
 // };
 
+export const searchPostTitles = titleString => {
+  return fetch(`http://localhost:8088/posts?title="${titleString}"`)
+    .then(res => res.json())
+};
