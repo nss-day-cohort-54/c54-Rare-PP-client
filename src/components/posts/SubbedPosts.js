@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { getSubsForFollower } from "../users/SubManager"
+import { Post } from "./Post"
 
 export const SubbedPosts = () => {
     const [subs, setSubs] = useState([{posts: []}])
@@ -34,7 +35,7 @@ export const SubbedPosts = () => {
         {
             posts.map(post => {
                 return <div key={`post--${post.id}`}>
-                    {JSON.stringify(post)}
+                    <Post listView={true} cardView={true} post={post} />
                     </div>
             })
         }

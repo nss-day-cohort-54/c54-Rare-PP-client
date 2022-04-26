@@ -8,6 +8,9 @@ import { AllCategories } from "./categories/AllCategories"
 
 import { User } from "./users/User.js"
 import { CreatePosts } from "./posts/CreatePosts.js"
+import { MyPosts } from "./posts/MyPosts.js"
+import { PostsByUser } from "./posts/PostsByUser.js"
+import { SinglePost } from "./posts/SinglePost.js"
 
 export const ApplicationViews = () => {
   return (
@@ -27,13 +30,24 @@ export const ApplicationViews = () => {
       <Route path="/tags">
         <AllTags />
       </Route>
+<<<<<<< HEAD
       <Route exact path="/newPost">
         <CreatePosts />
       </Route>
       
       {/* <Route exact path="/posts/myPosts">
+=======
+      <Route exact path="/posts/myPosts">
+>>>>>>> main
         <MyPosts />
       </Route>
+      <Route exact path="/posts/user/:userId(\d+)">
+        <PostsByUser />
+      </Route>
+      <Route exact path="/posts/single/:postId(\d+)">
+        <SinglePost />
+      </Route>
+      {/* 
       <Route exact path="/posts/create">
         <CreatePost />
       </Route> */}
