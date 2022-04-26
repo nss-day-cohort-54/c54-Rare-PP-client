@@ -41,7 +41,11 @@ export const Post = ({ listView, cardView, post }) => {
                 </div>
                 : listView
                     ? <div key={`post--${post.id}`} className="singlePost">
-                        <div>{post.title}</div>
+                        <div>
+                            <Link to={`/posts/single/${post.id}`}>
+                                {post.title}
+                            </Link>
+                        </div>
                         <div>{post.user.firstName} {post.user.lastName}</div>
                         <div>{post.publicationDate}</div>
                         <div>{post.category.label}</div>
@@ -59,7 +63,7 @@ export const Post = ({ listView, cardView, post }) => {
                             </div>
                             <div><img src={`${post.imageUrl || "https://picsum.photos/300/100"}`} /></div>
                             <div className="postDetailsBelowCard">
-                                <div>By <Link to={`users/${post.userId}`} >
+                                <div>By <Link to={`/users/${post.userId}`} >
                                     {post.user.username}
                                 </Link>
                                 </div>
