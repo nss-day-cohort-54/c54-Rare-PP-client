@@ -46,6 +46,9 @@ export const NavBar = ({ token, setToken }) => {
                 <div className="navbar-item">
                   <Link to="/users" className="navbar-item">Users</Link>
                 </div>
+                <div className="navbar-item">
+                  <Link to="/newPost" className="navbar-item">New Post</Link>
+                </div>
                 {/* add link to UserList view */}
               </>
               : ""
