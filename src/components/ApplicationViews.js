@@ -30,22 +30,19 @@ export const ApplicationViews = () => {
       <Route path="/tags">
         <AllTags />
       </Route>
-<<<<<<< HEAD
       <Route exact path="/newPost">
         <CreatePosts />
       </Route>
+      <Route exact path="/posts/single/:postId(\d+)">
+        <SinglePost />
+      </Route>
       
       {/* <Route exact path="/posts/myPosts">
-=======
       <Route exact path="/posts/myPosts">
->>>>>>> main
         <MyPosts />
       </Route>
       <Route exact path="/posts/user/:userId(\d+)">
         <PostsByUser />
-      </Route>
-      <Route exact path="/posts/single/:postId(\d+)">
-        <SinglePost />
       </Route>
       {/* 
       <Route exact path="/posts/create">
