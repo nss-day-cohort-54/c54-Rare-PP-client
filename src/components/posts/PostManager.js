@@ -58,6 +58,6 @@ export const getUserPosts = (id) => {
 // };
 
 export const searchPostTitles = titleString => {
-  return fetch(`http://localhost:8088/posts?title="${titleString}"`)
+  return fetch(`http://localhost:8088/posts?title=${titleString}`)
     .then(res => res.json())
 };

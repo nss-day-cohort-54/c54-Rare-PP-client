@@ -1,11 +1,11 @@
-import { getAllPosts } from "./PostManager"
+import { getAllPosts, searchPostTitles } from "./PostManager"
 import React, { useEffect, useState } from "react";
 import { Post } from "./Post";
+
 
 export const AllPosts = () => {
 
     const [posts, setPosts] = useState([])
-    const titleSearch = searchPostTitles(titleString)
     useEffect(() => {
         getAllPosts()
             .then((posts) => {
@@ -14,7 +14,7 @@ export const AllPosts = () => {
     },
         [])
 
-    // useEffect [searchButton]
+    // useEffect that updates posts, [searchButton]
     return <>
         <fieldset>
             <div className="form-group">
@@ -24,9 +24,13 @@ export const AllPosts = () => {
                     className="form-control"
                     placeholder="Title..."
                 />
-                <button className='button' onClick={titleSearch}>
+                <button className='button' onClick={e => {
+                    e.preventDefault()
+                    // debugger
+                    searchPostTitles(e.currentTarget.previousElementSibling.value)
+                        .then(setPosts)
+                }}>
                     <label htmlFor="searchButton">Search</label>
-
                 </button>
             </div>
 
