@@ -1,6 +1,15 @@
 // imports
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { fetchIt } from "../utils/Fetch"
+import { Settings } from "../utils/Settings"
 
 // def a function that will return a new category form
+
+export const NewCategoryForm = ({ getCategories }) => {
+
+    const [form, updateForm] = useState({label: ""})
+    const history = useHistory()
 
 // const [form, updateForm] = useState()
 
@@ -14,13 +23,21 @@
                 // define a new variable, fetchOption, method will be POST, headers will be "Content-Type": "application/json"
                 // convert what we're sending to the server into json body: JSON.stringify(newCategory)
         
+                const submitNewCategory = (e) => {
+                    e.preventDefault()
+                    const newCategory = {
+                        label: form.label,
+                    }
+                    return fetchIt(`${Settings.API}/categories`, "POST", JSON.stringify(newCategory))
+                            .then(getCategories)
+                }
 
         // post the newCategory to the Categories table in the db
         // return fetch("http://localhost:8088/categories", fetchOption) 
         
         // example:
         
-        // const submitTag = (e) => {
+        // const submitCategory = (e) => {
         //     e.preventDefault()
         //     const newCategory = {
         //         label: form.label,
@@ -54,25 +71,39 @@
                         // change the value of form by using updateForm and passing in copy as an argument
                         
                         // example:
-                        
-                        // <fieldset>
-                        // <div className="form-group">
-                        //     <label htmlFor="category">Create a new category</label>
-                        //     <input
-                        //         required autoFocus
-                        //         type="text" id="category"
-                        //         className="form-control"
-                        //         placeholder="add text"
-                        //         onChange={
-                        //             (e) => {
-                        //                 const copy = { ...form }
-                        //                 copy.label = e.target.value
-                        //                 updateForm(copy)
-                        //             }
-                        //         }
-                        //     />
-                        // </div>
-                        // </fieldset>
+                        return (
+                            <>
+                                <fieldset>
+                                    <div className="form-group">
+                                        <label htmlFor="category">Create a new category</label>
+                                        <input
+                                            required autoFocus
+                                            type="text" id="category"
+                                            className="form-control"
+                                            placeholder="add text"
+                                            value={form.label}
+                                            onChange={
+                                                (e) => {
+                                                    const copy = { ...form }
+                                                    copy.label = e.target.value
+                                                    updateForm(copy)
+                                                }
+                                            }
+                                        />
+                                        <div className="submitButtonCreateNewCategoryForm">
+                    
+                                            <button onClick={(e) => {
+                                                submitNewCategory(e)
+                                                updateForm({label: ""})
+                                            }} className="submit-button">
+                                                Submit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </>
+                        )
+                                        }
 
                         
 // add a button, which when clicked will invoke the submit new category function from the top of this module
