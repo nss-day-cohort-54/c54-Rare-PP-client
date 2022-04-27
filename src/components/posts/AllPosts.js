@@ -1,14 +1,16 @@
-import { getAllPosts, searchPostCategories, searchPostTitles } from "./PostManager"
+import { getAllPosts, searchPostCategories, searchPostTitles, getPostsByTag } from "./PostManager"
 import { getUserPosts } from "./PostManager"
 import React, { useEffect, useState } from "react";
 import { Post } from "./Post";
 import { getAllUsers } from "../users/UserManager"
+import { getAllTags } from "../tags/TagManager";
 
 
 export const AllPosts = () => {
 
     const [posts, setPosts] = useState([])
     const [users, setUsers] = useState([])
+    const [tags, setTags] = useState([])
     const [filter, setFilterType] = useState({ type: "all", value: "" })
 
 
@@ -19,6 +21,15 @@ export const AllPosts = () => {
         },
         []
     )
+
+    useEffect(
+        () => {
+            getAllTags()
+                .then(setTags)
+        },
+        []
+    )
+
 
     useEffect(() => {
         if (filter.type === "all") {
@@ -39,6 +50,8 @@ export const AllPosts = () => {
                 .then(setPosts)
             // run user filter fetch with value
         } else if (filter.type === "tag") {
+            getPostsByTag(filter.value)
+                .then(setPosts)
             // run tag filter fetch with value
         }
     }, [filter])
@@ -115,6 +128,31 @@ export const AllPosts = () => {
             </select>
         </fieldset>
         {/* filter by tag jsx */}
+        <fieldset>
+            <select
+                className="tagDropdown"
+                name="tagId"
+                value={filter.type === "tag" ? filter.value : "0"}
+                onChange={e => {
+                    e.preventDefault()
+                    let copy = { ...filter }
+                    copy.type = "tag"
+                    copy.value = e.target.value
+                    setFilterType(copy)
+                }}
+            >
+                <option name="tagId" hidden value="0">
+                    Filter By Tag
+                </option>
+                {tags?.map((t) => {
+                    return (
+                        <option key={t.id} name="TagId" value={t.id}>
+                            {t.label}
+                        </option>
+                    );
+                })}
+            </select>
+        </fieldset>
 
         <div className="singlePost">
             <div>Title</div>

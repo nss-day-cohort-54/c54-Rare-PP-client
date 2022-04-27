@@ -39,6 +39,9 @@ export const getUserPosts = (id) => {
   return fetchIt(`${Settings.API}/posts?user_id=${id}`)
 };
 
+export const getPostsByTag = (id) => {
+  return fetchIt(`${Settings.API}/posts?tag_id=${id}`)
+};
 // get posts by categoryId
 // export const getPostsByCategoryId = (categoryId) => {
 //   return fetch(`http://localhost:8088/posts?categoryId=${categoryId}`)
