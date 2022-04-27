@@ -1,12 +1,24 @@
 import { getAllPosts, searchPostCategories, searchPostTitles } from "./PostManager"
+import { getAllPosts, getUserPosts, searchPostTitles } from "./PostManager"
 import React, { useEffect, useState } from "react";
 import { Post } from "./Post";
+import { getAllUsers } from "../users/UserManager"
 
 
 export const AllPosts = () => {
 
     const [posts, setPosts] = useState([])
-    const [filter, setFilterType] = useState({ type: "all", value: ""})
+    const [users, setUsers] = useState([])
+    const [filter, setFilterType] = useState({ type: "all", value: "" })
+
+
+    useEffect(
+        () => {
+            getAllUsers()
+                .then(setUsers)
+        },
+        []
+    )
 
     useEffect(() => {
         if (filter.type === "all") {
@@ -20,9 +32,13 @@ export const AllPosts = () => {
         } else if (filter.type = "category") {
            searchPostCategories(filter.value)
                 .then(setPosts)
-        } else if (filter.type = "user") {
+        } 
+          // run category filter fetch with value
+          else if (filter.type === "user") {
+            getUserPosts(filter.value)
+                .then(setPosts)
             // run user filter fetch with value
-        } else if (filter.type = "tag") {
+        } else if (filter.type === "tag") {
             // run tag filter fetch with value
         }
     }, [filter])
@@ -31,7 +47,7 @@ export const AllPosts = () => {
     return <>
         {/* filter by title jsx */}
         <fieldset>
-            <div className="form-group">
+            <div className="titleSearch">
                 <input
                     type="text"
                     className="form-control"
@@ -73,6 +89,31 @@ export const AllPosts = () => {
         
         
         {/* filter by user jsx */}
+        <fieldset>
+            <select
+                className="authorDropdown"
+                name="authorId"
+                value={filter.type === "user" ? filter.value : "0"}
+                onChange={e => {
+                    e.preventDefault()
+                    let copy = { ...filter }
+                    copy.type = "user"
+                    copy.value = e.target.value
+                    setFilterType(copy)
+                }}
+            >
+                <option name="authorId" hidden value="0">
+                    Author...
+                </option>
+                {users?.map((user, index) => {
+                    return (
+                        <option key={index} name="AuthorId" value={user.id}>
+                            {user.username}
+                        </option>
+                    );
+                })}
+            </select>
+        </fieldset>
         {/* filter by tag jsx */}
 
         <div className="singlePost">

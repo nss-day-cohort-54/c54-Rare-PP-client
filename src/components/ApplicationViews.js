@@ -31,13 +31,14 @@ export const ApplicationViews = () => {
         <AllTags />
       </Route>
       <Route exact path="/newPost">
-        <CreatePosts />
+        <CreatePosts editing={false} />
+      </Route>
+      <Route exact path="/editPost/:postId(\d+)">
+        <CreatePosts editing={true} />
       </Route>
       <Route exact path="/posts/single/:postId(\d+)">
         <SinglePost />
       </Route>
-      
-      {/* <Route exact path="/posts/myPosts">
       <Route exact path="/posts/myPosts">
         <MyPosts />
       </Route>
