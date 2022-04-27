@@ -1,5 +1,5 @@
 import { getAllPosts, searchPostCategories, searchPostTitles } from "./PostManager"
-import { getAllPosts, getUserPosts, searchPostTitles } from "./PostManager"
+import { getUserPosts } from "./PostManager"
 import React, { useEffect, useState } from "react";
 import { Post } from "./Post";
 import { getAllUsers } from "../users/UserManager"
@@ -68,23 +68,23 @@ export const AllPosts = () => {
         {/* filter by category jsx */}
 
         <fieldset>
-            <div className="form-group">
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Category..."
-                />
-                <button className='button' onClick={e => {
+            <select
+                className="categoryDropdown"
+                name="categoryId"
+                value={filter.type === "category" ? filter.value : "0"}
+                onChange={e => {
                     e.preventDefault()
-                    let filterToSet = {
-                        type: "category",
-                        value: e.currentTarget.previousElementSibling.value
-                    }
-                    setFilterType(filterToSet)
-                }}>
-                    <label htmlFor="searchButton">Search</label>
-                </button>
-            </div>
+                    let copy = { ...filter }
+                    copy.type = "category"
+                    copy.value = e.target.value
+                    setFilterType(copy)
+                }}
+            >
+                <option name="categoryId" hidden value="0">
+                    Category...
+                </option>
+                
+            </select>
         </fieldset>
         
         
