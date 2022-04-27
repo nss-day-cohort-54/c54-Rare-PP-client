@@ -36,8 +36,7 @@ export const Post = ({ listView, cardView, post }) => {
                             {
                                 post.userId === currentUser
                                     ? <div className="cardButtons">
-                                        <div>Edit Button</div>
-                                        <div>Delete Button</div>
+                                        <ButtonControls isPost={true} postId={post.id} />
                                     </div>
                                     : null
                             }
@@ -50,6 +49,11 @@ export const Post = ({ listView, cardView, post }) => {
                             <Link to={`/posts/single/${post.id}`}>
                                 {post.title}
                             </Link>
+                            {
+                                post.userId === currentUser
+                                    ? <ButtonControls isPost={true} postId={post.id} />
+                                    : null
+                            }
                         </div>
                         <div>{post.user.firstName} {post.user.lastName}</div>
                         <div>{post.publicationDate}</div>
@@ -60,7 +64,11 @@ export const Post = ({ listView, cardView, post }) => {
                         <div className="postDetailsMain">
                             <div className="postDetailsTitle">
                                 <div className="cardButtons">
-                                    <ButtonControls postId={post.id} />
+                                    {
+                                        post.userId === currentUser
+                                            ? <ButtonControls isPost={true} postId={post.id} />
+                                            : null
+                                    }
                                 </div>
                                 <div>{post.title}</div>
                                 <div>{post.category.label}</div>

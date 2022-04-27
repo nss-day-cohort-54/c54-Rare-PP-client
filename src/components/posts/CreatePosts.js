@@ -66,7 +66,10 @@ export const CreatePosts = ({ getPosts, editing }) => {
 
     const submitPost = (e) => {
         e.preventDefault()
-        let tagsToAdd = form.tags.map(tag => tag.id)
+        let tagsToAdd = []
+        if(form.tags && form.tags.length > 0) {
+            tagsToAdd = form.tags.map(tag => tag.id)
+        }
         const newPost = {
             userId: parseInt(localStorage.getItem("token")),
             categoryId: form.categoryId,
@@ -77,13 +80,17 @@ export const CreatePosts = ({ getPosts, editing }) => {
             approved: 1,
             tags: tagsToAdd
         }
-        if (editing) {
-            newPost.id = parseInt(postId)
-            return fetchIt(`${Settings.API}/posts/${postId}`, "PUT", JSON.stringify(newPost))
-                .then(() => history.push(`/posts/single/${postId}`))
+        if(newPost.title && newPost.imageUrl && newPost.categoryId && newPost.tags.length > 0) {
+            if (editing) {
+                newPost.id = parseInt(postId)
+                return fetchIt(`${Settings.API}/posts/${postId}`, "PUT", JSON.stringify(newPost))
+                    .then(() => history.push(`/posts/single/${postId}`))
+            } else {
+                return fetchIt(`${Settings.API}/posts`, "POST", JSON.stringify(newPost))
+                    .then((sentPost) => history.push(`/posts/single/${sentPost.id}`))
+            }
         } else {
-            return fetchIt(`${Settings.API}/posts`, "POST", JSON.stringify(newPost))
-                .then((sentPost) => history.push(`/posts/single/${sentPost.id}`))
+            window.alert("Please finish filling out post form.")
         }
     }
     return (
