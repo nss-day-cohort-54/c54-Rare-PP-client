@@ -33,7 +33,9 @@ export const Comment = ({ postId, commentObject, currentAuthor, getComments }) =
                     currentAuthor
                     ? <div>
                         <div>Edit</div>
-                        <button onClick={() => removeComment(commentObject.id)}>Delete</button>
+                        <button onClick={() => removeComment(commentObject.id)}>
+                            <img className="deleteIcon" src="https://freesvg.org/img/trash.png" width="20em" height="20em" />
+                        </button>
                     </div>
                     : null
                 }   
