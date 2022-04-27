@@ -65,7 +65,7 @@ export const searchPostTitles = titleString => {
     .then(res => res.json())
 };
 
-export const searchPostCategories = categoryString => {
-  return fetch(`http://localhost:8088/posts?category=${categoryString}`)
+export const searchPostCategories = categoryId => {
+  return fetch(`http://localhost:8088/posts?category=${categoryId}`)
     .then(res => res.json())
 };

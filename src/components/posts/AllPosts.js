@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Post } from "./Post";
 import { getAllUsers } from "../users/UserManager"
 import { getAllTags } from "../tags/TagManager";
+import { getAllCategories } from "../categories/CategoryManager";
 
 
 export const AllPosts = () => {
@@ -11,6 +12,7 @@ export const AllPosts = () => {
     const [posts, setPosts] = useState([])
     const [users, setUsers] = useState([])
     const [tags, setTags] = useState([])
+    const [categories, setCategories] = useState([])
     const [filter, setFilterType] = useState({ type: "all", value: "" })
 
 
@@ -26,6 +28,14 @@ export const AllPosts = () => {
         () => {
             getAllTags()
                 .then(setTags)
+        },
+        []
+    )
+
+    useEffect(
+        () => {
+            getAllCategories()
+                .then(setCategories)
         },
         []
     )
@@ -94,9 +104,15 @@ export const AllPosts = () => {
                 }}
             >
                 <option name="categoryId" hidden value="0">
-                    Category...
+                    Filter By Category
                 </option>
-                
+                {categories?.map((c) => {
+                    return (
+                        <option key={c.id} name="CategoryId" value={c.id}>
+                            {c.label}
+                        </option>
+                    );
+                })}
             </select>
         </fieldset>
         
