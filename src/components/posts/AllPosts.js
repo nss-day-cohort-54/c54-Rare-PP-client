@@ -1,4 +1,4 @@
-import { getAllPosts, searchPostTitles } from "./PostManager"
+import { getAllPosts, searchPostCategories, searchPostTitles } from "./PostManager"
 import React, { useEffect, useState } from "react";
 import { Post } from "./Post";
 
@@ -18,7 +18,8 @@ export const AllPosts = () => {
             searchPostTitles(filter.value)
                 .then(setPosts)
         } else if (filter.type = "category") {
-            // run category filter fetch with value
+           searchPostCategories(filter.value)
+                .then(setPosts)
         } else if (filter.type = "user") {
             // run user filter fetch with value
         } else if (filter.type = "tag") {
@@ -49,6 +50,28 @@ export const AllPosts = () => {
             </div>
         </fieldset>
         {/* filter by category jsx */}
+
+        <fieldset>
+            <div className="form-group">
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Category..."
+                />
+                <button className='button' onClick={e => {
+                    e.preventDefault()
+                    let filterToSet = {
+                        type: "category",
+                        value: e.currentTarget.previousElementSibling.value
+                    }
+                    setFilterType(filterToSet)
+                }}>
+                    <label htmlFor="searchButton">Search</label>
+                </button>
+            </div>
+        </fieldset>
+        
+        
         {/* filter by user jsx */}
         {/* filter by tag jsx */}
 
