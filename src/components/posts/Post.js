@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
+import { CommentList } from "../comments/CommentsList"
 import "./Post.css"
 // function that renders a single post
 export const Post = ({ listView, cardView, post }) => {
+
+    const [showComments, setShowComments] = useState(false)
 
     const currentUser = parseInt(localStorage.getItem("token"))
 
@@ -67,10 +70,18 @@ export const Post = ({ listView, cardView, post }) => {
                                     {post.user.username}
                                 </Link>
                                 </div>
-                                <div>View Comments</div>
+                                {
+                                    showComments
+                                    ? <button onClick={() => {setShowComments(false)}}>Show Post</button>
+                                    : <button onClick={() => setShowComments(true)}>View Comments</button>
+                                }
                                 <div>Reactions</div>
                             </div>
-                            <div>{post.content}</div>
+                            {
+                                showComments
+                                ? <CommentList postId={post.id} />
+                                : <div>{post.content}</div>
+                            }
                         </div>
                         <div className="postDetailsTags">{post.tags.map(tag => <div key={`posttag${post.id}${tag.id}`}>{tag.label}</div>)}</div>
                     </div>
