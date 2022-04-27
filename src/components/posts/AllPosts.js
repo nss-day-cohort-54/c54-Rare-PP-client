@@ -50,7 +50,7 @@ export const AllPosts = () => {
         } else if (filter.type === "title") {
             searchPostTitles(filter.value)
                 .then(setPosts)
-        } else if (filter.type = "category") {
+        } else if (filter.type === "category") {
            searchPostCategories(filter.value)
                 .then(setPosts)
         } 
@@ -97,10 +97,12 @@ export const AllPosts = () => {
                 value={filter.type === "category" ? filter.value : "0"}
                 onChange={e => {
                     e.preventDefault()
-                    let copy = { ...filter }
-                    copy.type = "category"
-                    copy.value = e.target.value
-                    setFilterType(copy)
+                    if(e.target.value != "0") {
+                        let copy = JSON.parse(JSON.stringify(filter)) 
+                        copy.type = "category"
+                        copy.value = e.target.value
+                        setFilterType(copy)
+                    }
                 }}
             >
                 <option name="categoryId" hidden value="0">
@@ -125,10 +127,12 @@ export const AllPosts = () => {
                 value={filter.type === "user" ? filter.value : "0"}
                 onChange={e => {
                     e.preventDefault()
-                    let copy = { ...filter }
-                    copy.type = "user"
-                    copy.value = e.target.value
-                    setFilterType(copy)
+                    if(e.target.value != "0") {
+                        let copy = JSON.parse(JSON.stringify(filter)) 
+                        copy.type = "user"
+                        copy.value = e.target.value
+                        setFilterType(copy)
+                    }
                 }}
             >
                 <option name="authorId" hidden value="0">
@@ -151,7 +155,7 @@ export const AllPosts = () => {
                 value={filter.type === "tag" ? filter.value : "0"}
                 onChange={e => {
                     e.preventDefault()
-                    let copy = { ...filter }
+                    let copy = JSON.parse(JSON.stringify(filter)) 
                     copy.type = "tag"
                     copy.value = e.target.value
                     setFilterType(copy)
