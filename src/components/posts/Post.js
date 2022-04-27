@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { useHistory } from "react-router-dom"
 import { Link } from "react-router-dom"
 import { CommentList } from "../comments/CommentsList"
 import "./Post.css"
@@ -6,7 +7,7 @@ import "./Post.css"
 export const Post = ({ listView, cardView, post }) => {
 
     const [showComments, setShowComments] = useState(false)
-
+    const history = useHistory()
     const currentUser = parseInt(localStorage.getItem("token"))
 
 
@@ -58,7 +59,7 @@ export const Post = ({ listView, cardView, post }) => {
                         <div className="postDetailsMain">
                             <div className="postDetailsTitle">
                                 <div className="cardButtons">
-                                    <div>Edit</div>
+                                    <button onClick={() => history.push(`/editPost/${post.id}`)}>Edit</button>
                                     <div>Delete</div>
                                 </div>
                                 <div>{post.title}</div>

@@ -4,15 +4,17 @@ import { useHistory } from "react-router-dom";
 import { fetchIt } from "../utils/Fetch"
 import { Settings } from "../utils/Settings"
 import { getAllTags } from "../tags/TagManager";
-import { getAllPosts } from "./PostManager";
+import { getAllPosts, getSinglePost } from "./PostManager";
 import { getAllCategories } from "../categories/CategoryManager";
+import { useParams } from "react-router-dom";
 
 
 
-export const CreatePosts = ({ getPosts }) => {
+export const CreatePosts = ({ getPosts, editing }) => {
     const [form, updateForm] = useState({ label: "" })
     const [categories, setCategories] = useState([])
     const [tags, setTags] = useState([])
+    const { postId } = useParams()
     const history = useHistory()
 
     useEffect(() => {
@@ -31,30 +33,40 @@ export const CreatePosts = ({ getPosts }) => {
     },
         [])
 
-        const handleControlledInputChange = (event) => {
-            /*
-                When changing a state object or array, always create a new one
-                and change state instead of modifying current one
-            */
-            const newEntry = Object.assign({}, form)
-            if(event.target.name === "tags") {
-                if(!(event.target.name in newEntry)){
-                    newEntry[event.target.name] = []
-                }
-                let val = parseInt(event.target.id)
-                if(event.target.checked) {
-                    newEntry[event.target.name].push(val)
-                } else {
-                    newEntry[event.target.name] = newEntry[event.target.name].filter(tag => tag !== val)
-                }
-            } else {
-                newEntry[event.target.name] = event.target.value
+    useEffect(
+        () => {
+            if(editing) {
+                getSinglePost(postId)
+                    .then(updateForm)
             }
-            updateForm(newEntry)
+        }, []
+    )
+
+    const handleControlledInputChange = (event) => {
+        /*
+            When changing a state object or array, always create a new one
+            and change state instead of modifying current one
+        */
+        const newPost = Object.assign({}, form)
+        if(event.target.name === "tags") {
+            if(!(event.target.name in newPost)){
+                newPost[event.target.name] = []
+            }
+            let val = parseInt(event.target.id)
+            if(event.target.checked) {
+                newPost[event.target.name].push(tags.find(tag => tag.id === val))
+            } else {
+                newPost[event.target.name] = newPost[event.target.name].filter(tag => tag.id !== val)
+            }
+        } else {
+            newPost[event.target.name] = event.target.value
         }
+        updateForm(newPost)
+    }
 
     const submitPost = (e) => {
         e.preventDefault()
+        let tagsToAdd = form.tags.map(tag => tag.id)
         const newPost = {
             userId: parseInt(localStorage.getItem("token")),
             categoryId: form.categoryId,
@@ -63,10 +75,16 @@ export const CreatePosts = ({ getPosts }) => {
             imageUrl: form.imageUrl,
             content: form.content,
             approved: 1,
-            tags: form.tags
+            tags: tagsToAdd
         }
-        return fetchIt(`${Settings.API}/posts`, "POST", JSON.stringify(newPost))
-            .then((taco) => history.push(`/posts/single/${taco.id}`))
+        if(editing) {
+            newPost.id = parseInt(postId)
+            return fetchIt(`${Settings.API}/posts/${postId}`, "PUT", JSON.stringify(newPost))
+                    .then(() => history.push(`/posts/single/${postId}`))
+        } else {
+            return fetchIt(`${Settings.API}/posts`, "POST", JSON.stringify(newPost))
+                    .then((sentPost) => history.push(`/posts/single/${sentPost.id}`))
+        }
     }
     return (
         <>
@@ -74,7 +92,7 @@ export const CreatePosts = ({ getPosts }) => {
                 <div className="form-group">
 
                     <input
-                        required autoFocus
+                        required
                         type="text" id="post"
                         className="form-control"
                         placeholder="Title"
@@ -93,7 +111,7 @@ export const CreatePosts = ({ getPosts }) => {
                 <div className="form-group">
 
                     <input
-                        required autoFocus
+                        required
                         type="text" id="post"
                         className="form-control"
                         placeholder="Image URL"
@@ -112,7 +130,7 @@ export const CreatePosts = ({ getPosts }) => {
                 <div className="form-group">
 
                     <input
-                        required autoFocus
+                        required
                         type="text" id="post"
                         className="form-control"
                         placeholder="Article Content"
@@ -160,26 +178,26 @@ export const CreatePosts = ({ getPosts }) => {
 
             {tags.map(tag => {
                 // logic to determine whether box should be pre-checked
-                // let checked_status = false
-                // if("tags" in updatedEntry) {
-                //     if(updatedEntry.tags.length > 0) {
-                //         let found_tag = updatedEntry.tags.find(t => t === tag.id)
-                //         if(found_tag){
-                //             checked_status = true
-                //         } else {
-                //             checked_status = false
-                //         }
-                //     } else {
-                //         checked_status = false
-                //     }
-                // }
+                let checked_status = false
+                if("tags" in form) {
+                    if(form.tags.length > 0) {
+                        let found_tag = form.tags.find(t => t.id === tag.id)
+                        if(found_tag){
+                            checked_status = true
+                        } else {
+                            checked_status = false
+                        }
+                    } else {
+                        checked_status = false
+                    }
+                }
                 return <div key={`formTags-${tag.id}`} className="checkbox">
                     <input name="tags"
                         type="checkbox"
                         htmlFor="tag"
                         id={tag.id}
                         onChange={handleControlledInputChange}
-                        // checked={checked_status}
+                        checked={checked_status}
                     />
                     <label htmlFor={tag.id}>{tag.label}</label>
                 </div>
