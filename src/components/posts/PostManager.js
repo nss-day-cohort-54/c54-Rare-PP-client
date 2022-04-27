@@ -26,7 +26,9 @@ export const getSinglePost = (id) => {
 // export function that deletes a single post "postId => {"
 // return a fetch with /${postId},
 // method: DELETE
-
+export const deletePost = (id) => {
+  return fetchIt(`${Settings.API}/posts/${id}`, "DELETE")
+}
 
 // export a function that edits a post "post => {"
 // return fetch with /{post.id}

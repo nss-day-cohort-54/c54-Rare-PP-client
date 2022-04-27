@@ -1,6 +1,7 @@
 // imports
 // deleteComment from CommentManager.js
 
+import { ButtonControls } from "../buttonControls/ButtonControls"
 import { Settings } from "../utils/Settings"
 import { deleteComment } from "./CommentManager"
 
@@ -33,12 +34,11 @@ export const Comment = ({ postId, commentObject, currentAuthor, getComments }) =
         {
             currentAuthor
                 ? <div>
-                    <button onClick={() => {}}>
-                        <img className="editIcon" src={`${Settings.EditIcon}`} width="50px" height="50px" />
-                    </button>
-                    <button onClick={() => removeComment(commentObject.id)}>
-                        <img className="deleteIcon" src={`${Settings.DeleteIcon}`} width="50px" height="50px" />
-                    </button>
+                    <ButtonControls
+                        isPost={false}
+                        postId={postId}
+                        commentId={commentObject.id}
+                        getComments={getComments} />
                 </div>
                 : null
         }
