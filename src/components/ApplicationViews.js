@@ -36,8 +36,6 @@ export const ApplicationViews = () => {
       <Route exact path="/posts/single/:postId(\d+)">
         <SinglePost />
       </Route>
-      
-      {/* <Route exact path="/posts/myPosts">
       <Route exact path="/posts/myPosts">
         <MyPosts />
       </Route>
