@@ -76,7 +76,7 @@ export const AllPosts = () => {
                     setFilterType(copy)
                 }}
             >
-                <option name="authorId" value="0">
+                <option name="authorId" hidden value="0">
                     Author...
                 </option>
                 {users?.map((user, index) => {
