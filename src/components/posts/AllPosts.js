@@ -1,8 +1,10 @@
-import { getAllPosts, getPostsByTag, getUserPosts, searchPostTitles } from "./PostManager"
+import { getAllPosts, searchPostCategories, searchPostTitles, getPostsByTag } from "./PostManager"
+import { getUserPosts } from "./PostManager"
 import React, { useEffect, useState } from "react";
 import { Post } from "./Post";
 import { getAllUsers } from "../users/UserManager"
 import { getAllTags } from "../tags/TagManager";
+import { getAllCategories } from "../categories/CategoryManager";
 
 
 export const AllPosts = () => {
@@ -10,6 +12,7 @@ export const AllPosts = () => {
     const [posts, setPosts] = useState([])
     const [users, setUsers] = useState([])
     const [tags, setTags] = useState([])
+    const [categories, setCategories] = useState([])
     const [filter, setFilterType] = useState({ type: "all", value: "" })
 
 
@@ -29,6 +32,14 @@ export const AllPosts = () => {
         []
     )
 
+    useEffect(
+        () => {
+            getAllCategories()
+                .then(setCategories)
+        },
+        []
+    )
+
 
     useEffect(() => {
         if (filter.type === "all") {
@@ -39,9 +50,12 @@ export const AllPosts = () => {
         } else if (filter.type === "title") {
             searchPostTitles(filter.value)
                 .then(setPosts)
-        } else if (filter.type === "category") {
-            // run category filter fetch with value
-        } else if (filter.type === "user") {
+        } else if (filter.type = "category") {
+           searchPostCategories(filter.value)
+                .then(setPosts)
+        } 
+          // run category filter fetch with value
+          else if (filter.type === "user") {
             getUserPosts(filter.value)
                 .then(setPosts)
             // run user filter fetch with value
@@ -75,6 +89,34 @@ export const AllPosts = () => {
             </div>
         </fieldset>
         {/* filter by category jsx */}
+
+        <fieldset>
+            <select
+                className="categoryDropdown"
+                name="categoryId"
+                value={filter.type === "category" ? filter.value : "0"}
+                onChange={e => {
+                    e.preventDefault()
+                    let copy = { ...filter }
+                    copy.type = "category"
+                    copy.value = e.target.value
+                    setFilterType(copy)
+                }}
+            >
+                <option name="categoryId" hidden value="0">
+                    Filter By Category
+                </option>
+                {categories?.map((c) => {
+                    return (
+                        <option key={c.id} name="CategoryId" value={c.id}>
+                            {c.label}
+                        </option>
+                    );
+                })}
+            </select>
+        </fieldset>
+        
+        
         {/* filter by user jsx */}
         <fieldset>
             <select
