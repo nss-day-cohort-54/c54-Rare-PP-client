@@ -35,7 +35,7 @@ export const CreatePosts = ({ getPosts, editing }) => {
 
     useEffect(
         () => {
-            if(editing) {
+            if (editing) {
                 getSinglePost(postId)
                     .then(updateForm)
             }
@@ -48,12 +48,12 @@ export const CreatePosts = ({ getPosts, editing }) => {
             and change state instead of modifying current one
         */
         const newPost = Object.assign({}, form)
-        if(event.target.name === "tags") {
-            if(!(event.target.name in newPost)){
+        if (event.target.name === "tags") {
+            if (!(event.target.name in newPost)) {
                 newPost[event.target.name] = []
             }
             let val = parseInt(event.target.id)
-            if(event.target.checked) {
+            if (event.target.checked) {
                 newPost[event.target.name].push(tags.find(tag => tag.id === val))
             } else {
                 newPost[event.target.name] = newPost[event.target.name].filter(tag => tag.id !== val)
@@ -66,7 +66,10 @@ export const CreatePosts = ({ getPosts, editing }) => {
 
     const submitPost = (e) => {
         e.preventDefault()
-        let tagsToAdd = form.tags.map(tag => tag.id)
+        let tagsToAdd = []
+        if(form.tags && form.tags.length > 0) {
+            tagsToAdd = form.tags.map(tag => tag.id)
+        }
         const newPost = {
             userId: parseInt(localStorage.getItem("token")),
             categoryId: form.categoryId,
@@ -77,13 +80,17 @@ export const CreatePosts = ({ getPosts, editing }) => {
             approved: 1,
             tags: tagsToAdd
         }
-        if(editing) {
-            newPost.id = parseInt(postId)
-            return fetchIt(`${Settings.API}/posts/${postId}`, "PUT", JSON.stringify(newPost))
+        if(newPost.title && newPost.imageUrl && newPost.categoryId && newPost.tags.length > 0) {
+            if (editing) {
+                newPost.id = parseInt(postId)
+                return fetchIt(`${Settings.API}/posts/${postId}`, "PUT", JSON.stringify(newPost))
                     .then(() => history.push(`/posts/single/${postId}`))
-        } else {
-            return fetchIt(`${Settings.API}/posts`, "POST", JSON.stringify(newPost))
+            } else {
+                return fetchIt(`${Settings.API}/posts`, "POST", JSON.stringify(newPost))
                     .then((sentPost) => history.push(`/posts/single/${sentPost.id}`))
+            }
+        } else {
+            window.alert("Please finish filling out post form.")
         }
     }
     return (
@@ -179,10 +186,10 @@ export const CreatePosts = ({ getPosts, editing }) => {
             {tags.map(tag => {
                 // logic to determine whether box should be pre-checked
                 let checked_status = false
-                if("tags" in form) {
-                    if(form.tags.length > 0) {
+                if ("tags" in form) {
+                    if (form.tags.length > 0) {
                         let found_tag = form.tags.find(t => t.id === tag.id)
-                        if(found_tag){
+                        if (found_tag) {
                             checked_status = true
                         } else {
                             checked_status = false

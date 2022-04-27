@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { useHistory } from "react-router-dom"
 import { Link } from "react-router-dom"
+import { ButtonControls } from "../buttonControls/ButtonControls"
 import { CommentList } from "../comments/CommentsList"
 import "./Post.css"
 // function that renders a single post
@@ -35,8 +36,7 @@ export const Post = ({ listView, cardView, post }) => {
                             {
                                 post.userId === currentUser
                                     ? <div className="cardButtons">
-                                        <div>Edit Button</div>
-                                        <div>Delete Button</div>
+                                        <ButtonControls isPost={true} postId={post.id} />
                                     </div>
                                     : null
                             }
@@ -49,6 +49,11 @@ export const Post = ({ listView, cardView, post }) => {
                             <Link to={`/posts/single/${post.id}`}>
                                 {post.title}
                             </Link>
+                            {
+                                post.userId === currentUser
+                                    ? <ButtonControls isPost={true} postId={post.id} />
+                                    : null
+                            }
                         </div>
                         <div>{post.user.firstName} {post.user.lastName}</div>
                         <div>{post.publicationDate}</div>
@@ -59,8 +64,11 @@ export const Post = ({ listView, cardView, post }) => {
                         <div className="postDetailsMain">
                             <div className="postDetailsTitle">
                                 <div className="cardButtons">
-                                    <button onClick={() => history.push(`/editPost/${post.id}`)}>Edit</button>
-                                    <div>Delete</div>
+                                    {
+                                        post.userId === currentUser
+                                            ? <ButtonControls isPost={true} postId={post.id} />
+                                            : null
+                                    }
                                 </div>
                                 <div>{post.title}</div>
                                 <div>{post.category.label}</div>
@@ -73,15 +81,15 @@ export const Post = ({ listView, cardView, post }) => {
                                 </div>
                                 {
                                     showComments
-                                    ? <button onClick={() => {setShowComments(false)}}>Show Post</button>
-                                    : <button onClick={() => setShowComments(true)}>View Comments</button>
+                                        ? <button onClick={() => { setShowComments(false) }}>Show Post</button>
+                                        : <button onClick={() => setShowComments(true)}>View Comments</button>
                                 }
                                 <div>Reactions</div>
                             </div>
                             {
                                 showComments
-                                ? <CommentList postId={post.id} />
-                                : <div>{post.content}</div>
+                                    ? <CommentList postId={post.id} />
+                                    : <div>{post.content}</div>
                             }
                         </div>
                         <div className="postDetailsTags">{post.tags.map(tag => <div key={`posttag${post.id}${tag.id}`}>{tag.label}</div>)}</div>

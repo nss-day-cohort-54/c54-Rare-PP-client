@@ -69,7 +69,7 @@ export const AllPosts = () => {
     // useEffect that updates posts, [searchButton]
     return <>
         {/* filter by title jsx */}
-        <fieldset>
+        <fieldset id="titleSearchField">
             <div className="titleSearch">
                 <input
                     type="text"
@@ -118,7 +118,7 @@ export const AllPosts = () => {
         
         
         {/* filter by user jsx */}
-        <fieldset>
+        <fieldset id="authorDropdown">
             <select
                 className="authorDropdown"
                 name="authorId"
@@ -177,10 +177,16 @@ export const AllPosts = () => {
             <div>Category</div>
             <div>Tags</div>
         </div>
-        {posts.map((post) => {
-            return <Post listView={true} cardView={false} post={post} />
-            // needs author name and category, publication date, content 
-        })}
+        {
+            posts.length > 0
+                ? posts.map((post) => {
+                    return <div key={post.id} className="posts">
+                        <Post listView={true} cardView={false} post={post} />
+                    </div>
+                    // needs author name and category, publication date, content 
+                })
+                : "No posts"
+        }
 
 
     </>
